@@ -48,32 +48,38 @@ $arr_pattern=array();
 $arr_pattern=explode(" ", $pattern);
 if($arr_pattern[1]=="")$arr_pattern[1]=$arr_pattern[0];
 $index1=BoyerMoore($arr_txt[$k], $arr_pattern[0]);
+$index2=BoyerMoore($arr_txt[$k], $arr_pattern[1]);
 if($index1>="0")//เช็คตำแหน่งแรกของคำหลัก
 	 {
 $p_mark=$index1;
 //echo $arr_txt[$k]."->$index1";
 $arr_pattern[0]=str_replace($arr_pattern[0],"<b>".$arr_pattern[0]."</b>",$arr_txt[$k]);
 	 }
-$index2=BoyerMoore($arr_txt[$k], $arr_pattern[1]);
-if($index2>="0")
+if($index1>="0" or $index2>="0")
 	 {
 if($index1<"0"){
 $word[$i]=str_replace($arr_pattern[1],"<b>".$arr_pattern[1]."</b>",$arr_txt[$k]);
 $m_num="1";
 $n_len="999";
 }
+else if($index1>="0" and $index2>="0"){
+$word[$i]=str_replace($arr_pattern[1],"<b>".$arr_pattern[1]."</b>",$arr_pattern[0]);
+$m_num="2";
+$n_len=$index2-$index1;//ระยะห่างที่น้อยที่สุดระหว่างคำหลักคู่ใดๆ
+}
 else{
 $word[$i]=str_replace($arr_pattern[1],"<b>".$arr_pattern[1]."</b>",$arr_pattern[0]);
 $m_num="2";
-$n_len=$index2-$index1;
+$m_numd="1";
 }
-if($m_num<'2')$p_mark=$index2;
+if($m_num<'2')$p_mark=$index2;//ตำแหน่งการจับคู่ของหลักคำแรก ไม่มี	
+if($p_mark<'0'){$p_mark=$index1;$n_len="999";}//ตำแหน่งการจับคู่ของหลักคำที่สอง ไม่มี
 
 $list[$i][0]=$i;
 $list[$i][1]=$n_len;
 $list[$i][2]=$p_mark;
-$list[$i][3]=$m_num;
-$list[$i][4]=$word[$i];
+$list[$i][3]=$m_num;//จำนวนคำหลักที่ถูกจับคู่
+$list[$i][4]=$word[$i];//ชื่อสินค้า
 $list[$i][5]=$k+1;
 //echo "$i=$word[$i]->$m_num->$p_mark->$n_len <br>";
 $i++;
@@ -97,12 +103,43 @@ $k0=$list[$key][0];
 $temp[$k0]=$k2;
  }
  asort($temp);
- foreach ($temp as $key => $val) {
+foreach ($temp as $key => $val) {
 	 $tt1[]=$key;
 	     //echo "$key = $val\n";
 }
 //echo print_r($tt1);
 //////////////////////////////////////////////////
+//echo "<br>";
+$temp1=array();
+ for($i=0;$i<=count($data[2])-1;$i++){
+$key=$data[2][$i];
+$k2=$list[$key][2];
+$k1=$list[$key][1];
+$k0=$list[$key][0];
+//echo $k0."-".$k2."<br>";
+$temp1[$k2][$k0]=$k1;
+ }
+ asort($temp1);
+
+//echo print_r($temp1);
+foreach ($temp1 as $key => $val) {
+	 //$tt11[]=$key;
+	foreach ($val as $key2 => $val2) {
+	  // echo "$key2,$val2 ";
+	   $tt11[$key2]=$val2;
+	 }
+}
+echo "<br>";
+
+if($tt11)
+	{
+	//===
+ asort($tt11);
+foreach ($tt11 as $key => $val) {
+	 $tt111[]=$key;
+	     //echo "$key = $val\n";
+}
+
 //////////////////////////////////////////////////
 
 $temp=array();
@@ -118,11 +155,13 @@ $temp[$k0]=$k2;
 	 $tt2[]=$key;
 	     //echo "$key = $val\n";
 }
+//===
+}
 //////////////////////////////////////////////////
 //echo "<hr>";
 //echo print_r($tt2);
 if($tt1!='' && $tt2!=""){
-$tt=array_merge($tt1, $tt2);
+$tt=array_merge($tt111, $tt2);
 }
 else{
 $tt=$tt1;
@@ -176,7 +215,7 @@ function makeCharTable($string) {
     for ($i=0; $i < $len; $i++) { 
         $ch_table[$string[$i]] = $len - $i-1 ; 
     }
-		//	echo print_r($ch_table)."<hr>";
+		//echo print_r($ch_table)."<hr>";
 
   return $ch_table;
 
