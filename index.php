@@ -23,9 +23,11 @@ else{
    </table>
 </form>
 <?
-if($_POST[submit]=="Search"){
 $txt_input="product.txt";
  echo "File default input:<a href='product.txt' target='_blank'>product.txt</a>";
+ echo "<hr>";
+
+if($_POST[submit]=="Search"){
 $pattern=$keyword;
 $p_mark=0;
 $myfile = fopen($txt_input, "r") or die("Unable to open file!");
@@ -33,7 +35,6 @@ if($myfile) {
         $file = fread($myfile,filesize($txt_input));
 	fclose($myfile);
 }
-echo "<hr>";
 
 $arr_txt=explode("\n", $file);
 $N=count($arr_txt);
@@ -47,7 +48,7 @@ $arr_pattern=array();
 $arr_pattern=explode(" ", $pattern);
 if($arr_pattern[1]=="")$arr_pattern[1]=$arr_pattern[0];
 $index1=BoyerMoore($arr_txt[$k], $arr_pattern[0]);
-if($index1>="0")
+if($index1>="0")//เช็คตำแหน่งแรกของคำหลัก
 	 {
 $p_mark=$index1;
 //echo $arr_txt[$k]."->$index1";
@@ -65,13 +66,16 @@ else{
 $word[$i]=str_replace($arr_pattern[1],"<b>".$arr_pattern[1]."</b>",$arr_pattern[0]);
 $m_num="2";
 $n_len=$index2-$index1;
+echo "$index2-$index1,";
 }
+$p_mark=$index2;
+
 $list[$i][0]=$i;
 $list[$i][1]=$n_len;
 $list[$i][2]=$p_mark;
 $list[$i][3]=$m_num;
 $list[$i][4]=$word[$i];
-$list[$i][5]=$k;
+$list[$i][5]=$k+1;
 //echo "$i=$word[$i]->$m_num->$p_mark->$n_len <br>";
 $i++;
 	 }
@@ -129,7 +133,7 @@ echo "<hr>";
 //echo print_r($tt);
 if($tt){
 echo "<table>";
-echo "<tr><th>No</th><th>ID</th><th>ชื่อสินค้า</th><th>จำนวนคำหลักที่ถูกจับคู่</th><th>ตำแหน่งการจับคู่ของหลักคำแรก</th><th>ระยะห่างที่น้อยที่สุดระหว่างคำหลักคู่ใดๆ</th></tr>";
+echo "<tr><th>No</th><th>LineID</th><th>ชื่อสินค้า</th><th>จำนวนคำหลักที่ถูกจับคู่</th><th>ตำแหน่งการจับคู่ของหลักคำแรก</th><th>ระยะห่างที่น้อยที่สุดระหว่างคำหลักคู่ใดๆ</th></tr>";
 //======================================
  for($i=0,$n=1;$i<=$limit-1;$i++,$n++){
 	 $piont=$tt[$i];
