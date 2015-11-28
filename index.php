@@ -175,7 +175,14 @@ echo "<tr><th>No</th><th>LineID</th><th>ชื่อสินค้า</th><th>�
 //======================================
  for($i=0,$n=1;$i<=$limit-1;$i++,$n++){
 	 $piont=$tt[$i];
-	 echo "<tr><td>$n</td><td>".$list[$piont][5]."</td><td>".$list[$piont][4]."</td><td>".$list[$piont][3]."</td><td>".$list[$piont][2]."</td><td>";
+	 echo "<tr><td>$n</td><td>".$list[$piont][5]."</td><td>".$list[$piont][4]."</td><td>";
+	  if($list[$piont][1]=="999"){
+		  echo "1";
+	  }
+	  else{
+	 echo $list[$piont][3];
+	  }
+	 echo "</td><td>".$list[$piont][2]."</td><td>";
 	 if($list[$piont][1]!="999"){
 		 echo $list[$piont][1];
 	 }
