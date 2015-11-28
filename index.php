@@ -29,7 +29,7 @@ $txt_input="product.txt";
 
 if($_POST[submit]=="Search"){
 $pattern=$keyword;
-$p_mark=0;
+$p_mark="-";
 $myfile = fopen($txt_input, "r") or die("Unable to open file!");
 if($myfile) {
         $file = fread($myfile,filesize($txt_input));
@@ -68,7 +68,8 @@ $m_num="2";
 $n_len=$index2-$index1;
 echo "$index2-$index1,";
 }
-$p_mark=$index2;
+echo $index1;
+if($m_num<'2')$p_mark=$index2;
 
 $list[$i][0]=$i;
 $list[$i][1]=$n_len;
