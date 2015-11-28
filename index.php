@@ -66,9 +66,7 @@ else{
 $word[$i]=str_replace($arr_pattern[1],"<b>".$arr_pattern[1]."</b>",$arr_pattern[0]);
 $m_num="2";
 $n_len=$index2-$index1;
-echo "$index2-$index1,";
 }
-echo $index1;
 if($m_num<'2')$p_mark=$index2;
 
 $list[$i][0]=$i;
